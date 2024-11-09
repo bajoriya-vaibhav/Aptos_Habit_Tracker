@@ -1,5 +1,7 @@
 import Stars from '../assets/stars.gif'
 import Square from '../assets/sqaureframe.png'
+import Arrow from '../assets/arrow.png'
+
 function Invitation() {
   return (
     <div className='min-w-screen min-h-screen relative flex flex-col justify-center items-center'>
@@ -13,7 +15,7 @@ function Invitation() {
             <div className='text-2xl text-white w-1/2 text-center m-auto my-10'>
                 Join Us and Make You Habit Tracking a Fun and Gamified. Get Comfortable and Fastened Your Seatbelt for the Journey to Habitise. <br /> Join Us 
             </div>
-            
+            <img src={Arrow} className='m-auto h-20' />
         </div>
         </div>
     </div>
