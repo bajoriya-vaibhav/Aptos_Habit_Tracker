@@ -1,6 +1,5 @@
 import Stars from '../assets/stars.gif'
 import Square from '../assets/sqaureframe.png'
-import Arrow from '../assets/arrow.png'
 
 function Invitation() {
   return (
