@@ -35,7 +35,7 @@
    ```
 2. **Install Dependencies**:
    ```bash
-      npm install
+   npm install
    ```
 3. **Configure the Environment**:
     Set up the required environment variables in a `.env` file.
@@ -48,15 +48,15 @@
    ```
 
 ## Usage
-    1. **Connect Wallet**: Connect your Aptos wallet to start tracking habits.
-    2. **Set Up Tasks**: Define daily tasks or habits you want to track.
-    3. **Complete Tasks and Earn Rewards**: Track your progress and receive rewards for each completed task.
-    4. **View Social Score and Badges**: Check your cumulative score and badges on the public profile.
+1. **Connect Wallet**: Connect your Aptos wallet to start tracking habits.
+2. **Set Up Tasks**: Define daily tasks or habits you want to track.
+3. **Complete Tasks and Earn Rewards**: Track your progress and receive rewards for each completed task.
+4. **View Social Score and Badges**: Check your cumulative score and badges on the public profile.
 
 ## Future Enhancements
-    1. **Leaderboard**: Add a leaderboard to view top performers and compare scores.
-    2. **Advanced Analytics**: Provide detailed reports on habits and productivity patterns.
-    3. **Mobile Application**: Develop a mobile version to enhance accessibility.
+1. **Leaderboard**: Add a leaderboard to view top performers and compare scores.
+2. **Advanced Analytics**: Provide detailed reports on habits and productivity patterns.
+3. **Mobile Application**: Develop a mobile version to enhance accessibility.
 
 ## Contributing
 
