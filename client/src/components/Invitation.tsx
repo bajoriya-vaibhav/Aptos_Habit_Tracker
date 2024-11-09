@@ -12,7 +12,7 @@ function Invitation() {
             </div>
             <div className='rotate-2 text-pink text-6xl font-extrabold text-center'>Invited</div>
             <div className='text-2xl text-white w-1/2 text-center m-auto my-10'>
-                Join Us and Make You Habit Tracking a Fun and Gamified. Get Comfortable and Fastened Your Seatbelt for the Journey to Habitise. <br /> Join Us 
+                Join Us and Make Your Habit Tracking a Fun and Gamified. Get Comfortable and Fastened Your Seatbelt for the Journey to Habitise. <br /> Be Healthy with the fun with others.
             </div>
         </div>
         </div>
