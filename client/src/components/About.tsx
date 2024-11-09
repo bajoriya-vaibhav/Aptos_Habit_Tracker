@@ -1,9 +1,11 @@
 import Stars from '../assets/stars.gif'
 import Square from '../assets/sqaureframe.png'
+import { Link } from 'react-router-dom'
 
 function About() {
   return (
-    <div className='min-w-screen min-h-screen relative flex flex-col justify-center items-center overflow-hidden'>
+    <div id="about" className='min-w-screen min-h-screen relative flex flex-col justify-center items-center overflow-hidden'>
+      <Link to="/"><div className="absolute top-0 right-0 m-10 text-6xl text-white font-light	">X</div></Link>
         <img src = {Stars} className="w-screen h-screen absolute top-0 left-0 object-cover -z-10"></img>
         <div className="z-50 text-xl my-20">
             <div className='py-6'>

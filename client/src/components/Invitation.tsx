@@ -15,7 +15,6 @@ function Invitation() {
             <div className='text-2xl text-white w-1/2 text-center m-auto my-10'>
                 Join Us and Make You Habit Tracking a Fun and Gamified. Get Comfortable and Fastened Your Seatbelt for the Journey to Habitise. <br /> Join Us 
             </div>
-            <img src={Arrow} className='m-auto h-20' />
         </div>
         </div>
     </div>

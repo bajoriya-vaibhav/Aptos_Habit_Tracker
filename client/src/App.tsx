@@ -1,15 +1,19 @@
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import About from "./components/About"
-import Hero from "./components/Hero"
-import Invitation from "./components/Invitation"
-import NFTS from "./components/NFTS"
+import Home from './components/Home';
+import Dashboard from './components/User/Dashboard';
 
 function App() {
   return (
     <>
-      <Hero />
-      <Invitation />
-      <NFTS />
-      <About />
+      <Router>
+      <Routes>
+        <Route path="/" element={<Home />} 
+        />
+        <Route path="/about" element={<About />} />
+        <Route path="/user/:walletAddress" element={<Dashboard />} />
+      </Routes>
+    </Router>
     </>
   )
 }
