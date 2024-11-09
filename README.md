@@ -61,9 +61,10 @@
 ## Contributing
 
 Contributions are welcome! Please fork the repository and make a pull request with your changes.
-License
+
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-Acknowledgments
+## Acknowledgments
 
 Special thanks to the Aptos developer community and all contributors to Web3 and blockchain technologies.
