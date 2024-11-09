@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@aptos-labs/ts-sdk": "^1.32.0",
     "@aptos-labs/wallet-adapter-ant-design": "^3.0.18",
     "@aptos-labs/wallet-adapter-react": "^3.7.4",
     "@mizuwallet-sdk/core": "^1.4.0",
@@ -26,20 +27,20 @@
     "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.13.0",
-    "@types/antd": "^0.12.32",
+    "@eslint/js": "^9.14.0",
+    "@types/antd": "^1.0.4",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react-swc": "^3.5.0",
+    "@vitejs/plugin-react-swc": "^3.7.1",
     "autoprefixer": "^10.4.20",
-    "eslint": "^9.13.0",
+    "eslint": "^9.14.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
-    "globals": "^15.11.0",
+    "globals": "^15.12.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",
-    "typescript": "~5.6.2",
-    "typescript-eslint": "^8.11.0",
+    "typescript": "~5.6.3",
+    "typescript-eslint": "^8.13.0",
     "vite": "^5.4.10"
   }
 }

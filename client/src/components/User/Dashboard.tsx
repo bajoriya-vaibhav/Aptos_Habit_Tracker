@@ -1,8 +1,12 @@
-
+import { useParams } from 'react-router-dom';
 
 function Dashboard() {
+  const { walletAddress } = useParams();
   return (
-    <div>Dashboard</div>
+    <div>
+      <h1>User Profile</h1>
+      <p>Wallet Address: {walletAddress}</p>
+    </div>
   )
 }
 
