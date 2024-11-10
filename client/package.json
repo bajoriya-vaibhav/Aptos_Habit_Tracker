@@ -20,6 +20,7 @@
     "client": "file:",
     "graphql": "^16.9.0",
     "graphql-request": "^7.1.2",
+    "lucide-react": "^0.456.0",
     "petra-plugin-wallet-adapter": "^0.4.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
