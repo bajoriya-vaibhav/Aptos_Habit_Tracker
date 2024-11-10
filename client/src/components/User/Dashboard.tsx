@@ -5,7 +5,6 @@ import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
 import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 import { Loader2 } from "lucide-react";
 import Logo from '../../assets/logo.png';
-import Bg from '../../assets/bg2.jpg';
 
 type Task = {
   address: string;

@@ -1,7 +1,6 @@
-import React from 'react'
 
-function 
-() {
+
+function Help() {
   return (
     <div className='min-h-screen min-w-screen overflow-hidden bg-dark'>
         <div className='text-7xl text-white'>Stuck AnyWhere<br></br>Need Help</div>
@@ -9,4 +8,4 @@ function
   )
 }
 
-export default 
+export default Help
