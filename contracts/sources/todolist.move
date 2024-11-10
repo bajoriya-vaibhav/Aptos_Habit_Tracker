@@ -1,3 +1,4 @@
+
 module account_addr::user {
     use std::signer;
 
@@ -77,7 +78,6 @@ module account_addr::user {
 
 module account_addr::todolist {
 	use aptos_framework::event;
-	// use std::string::String;
 	use std::signer;
 	use aptos_std::table::{Self, Table};
 	use aptos_framework::account;
@@ -91,10 +91,9 @@ module account_addr::todolist {
 
 	struct TodoList has key {
 		tasks: Table<u64, Task>,
-		set_task_event: event::EventHandle<Task>,
 		task_counter: u64
 	}
-
+	#[event]
 	struct Task has store, drop, copy {
 		task_id: u64,
 		address: address,
@@ -109,7 +108,6 @@ module account_addr::todolist {
 	public entry fun create_list(account: &signer) {
 		let todoList = TodoList {
 			tasks: table::new(),
-			set_task_event: account::new_event_handle<Task>(account),
 			task_counter: 0
 		};
 		move_to(account, todoList);
@@ -138,10 +136,7 @@ module account_addr::todolist {
 		table::upsert(&mut todo_list.tasks, counter, new_task);
 		todo_list.task_counter = counter;
 
-		event::emit_event<Task>(
-			&mut borrow_global_mut<TodoList>(signer_address).set_task_event,
-			new_task,
-		);
+		event::emit(new_task);
 	}
 
 	// Mark task as complete and apply effects

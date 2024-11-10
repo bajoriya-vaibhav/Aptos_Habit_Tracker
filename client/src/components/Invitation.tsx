@@ -3,7 +3,7 @@ import Square from '../assets/sqaureframe.png'
 
 function Invitation() {
   return (
-    <div className='min-w-screen min-h-screen relative flex flex-col justify-center items-center'>
+    <div className='overflow-hidden min-w-screen min-h-screen relative flex flex-col justify-center items-center'>
         <img src = {Stars} className="w-screen h-screen absolute top-0 left-0 object-cover -z-10"></img>
         <div className="z-50 text-xl my-20">
             <div className='py-6'>

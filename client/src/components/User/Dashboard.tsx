@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useWallet, InputTransactionData } from "@aptos-labs/wallet-adapter-react";
 import { WalletSelector } from "@aptos-labs/wallet-adapter-ant-design";
 import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
-import { Aptos } from "@aptos-labs/ts-sdk";
+import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 import { Loader2 } from "lucide-react";
+// import { Provider } from "aptos";
 
 type Task = {
   address: string;
@@ -14,8 +15,9 @@ type Task = {
   duration?: number;
 };
 
-export const aptos = new Aptos();
-export const moduleAddress = "0xbdcdec7f694fb971cbcdacc63df84fccc4c13c3df4a576e21bdfc5ac1b680477";
+const aptosConfig = new AptosConfig({ network: Network.DEVNET });
+export const aptos = new Aptos(aptosConfig);
+export const moduleAddress = "7436ad50e5c686575903e3e8eca3282f4e0f6f3b245b50963f6537a461be1333";
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -33,11 +35,13 @@ function App() {
     if (!account) return [];
     try {
       const todoListResource = await aptos.getAccountResource(
-        {accountAddress: account?.address,
-        resourceType: `${moduleAddress}::todolist::TodoList`}
+        {accountAddress:account?.address,
+          resourceType:`${moduleAddress}::todolist::TodoList`}
       );
       setAccountHasList(true);
+      // tasks table handle
       const tableHandle = (todoListResource as any).data.tasks.handle;
+      // tasks table counter
       const taskCounter = (todoListResource as any).data.task_counter;
 
       let tasks = [];
@@ -48,10 +52,11 @@ function App() {
           value_type: `${moduleAddress}::todolist::Task`,
           key: `${counter}`,
         };
-        const task = await aptos.getTableItem<Task>({handle: tableHandle, data: tableItem});
+        const task = await aptos.getTableItem<Task>({handle:tableHandle, data:tableItem});
         tasks.push(task);
         counter++;
       }
+      // set tasks in local state
       setTasks(tasks);
     } catch (e: any) {
       setAccountHasList(false);
@@ -62,15 +67,17 @@ function App() {
     if (!account) return [];
     setTransactionInProgress(true);
 
-    const transaction: InputTransactionData = {
-      data: {
-        function: `${moduleAddress}::todolist::create_list`,
-        functionArguments: []
+    const transaction:InputTransactionData = {
+      data:{
+        function:`${moduleAddress}::todolist::create_list`,
+        functionArguments:[]
       }
-    };
+    }
     try {
+      // sign and submit transaction to chain
       const response = await signAndSubmitTransaction(transaction);
-      await aptos.waitForTransaction({transactionHash: response.hash});
+      // wait for transaction
+      await aptos.waitForTransaction({transactionHash:response.hash});
       setAccountHasList(true);
     } catch (error: any) {
       setAccountHasList(false);
@@ -107,7 +114,14 @@ function App() {
     try {
       const response = await signAndSubmitTransaction(transaction);
       await aptos.waitForTransaction({transactionHash: response.hash});
-      setTasks([...tasks, newTaskToPush]);
+      // Create a new array based on current state:
+      let newTasks = [...tasks];
+
+      // Add item to the tasks array
+      newTasks.push(newTaskToPush);
+      // Set state
+      setTasks(newTasks);
+      // clear input text
       setNewTask("");
     } catch (error: any) {
       console.log("error", error);
@@ -118,6 +132,7 @@ function App() {
 
   const onCheckboxChange = async (taskId: string) => {
     if (!account) return;
+    
     setTransactionInProgress(true);
 
     try {
