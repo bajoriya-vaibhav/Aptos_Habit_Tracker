@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         'pink':'#FF5EAA',
+        'dark': '#0B0D11',
       },
     },
   },

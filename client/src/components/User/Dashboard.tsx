@@ -4,7 +4,8 @@ import { WalletSelector } from "@aptos-labs/wallet-adapter-ant-design";
 import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
 import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 import { Loader2 } from "lucide-react";
-// import { Provider } from "aptos";
+import Logo from '../../assets/logo.png';
+import Bg from '../../assets/bg2.jpg';
 
 type Task = {
   address: string;
@@ -173,13 +174,18 @@ function App() {
   }, [account?.address]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Our Todo List</h1>
-          <div>
-            <WalletSelector />
+    <div className="bg-dark text-white overflow-hidden min-w-screen min-h-screen relative">
+      <div className="mx-auto ">
+        <div className="flex justify-between items-center z-50 mx-10">
+          <img src={Logo} className='m-4 h-24 w-26'></img>
+          <div className='flex flex-center m-10 text-2xl gap-10'>
+            <a href="#" className="p-1">Tasks</a>
+            <a href="#" className="p-1">Collections</a>
+            <a href="#" className="p-1">Challenges</a>
+            <a href="#" className="p-1">Leadership Board</a>
+            <a href="#" className="p-1">Help</a>
           </div>
+          <div><WalletSelector /></div>
         </div>
 
         {transactionInProgress && (
