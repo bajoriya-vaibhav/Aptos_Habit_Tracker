@@ -5,6 +5,7 @@ import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
 import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 import { Loader2 } from "lucide-react";
 import Logo from '../../assets/logo.png';
+import { useNavigate, useParams,Link } from "react-router-dom";
 
 type Task = {
   address: string;
@@ -17,13 +18,13 @@ type Task = {
 
 const aptosConfig = new AptosConfig({ network: Network.DEVNET });
 export const aptos = new Aptos(aptosConfig);
-export const moduleAddress = "e9af3772ca527779acdaa74011c00f9145ea15e1f0a0264f85eea08994964cd8";
+export const moduleAddress = "0x2fc2b5e19e8b9793a7ce74b16772285f12005a95599d5934c47c8e18f2e68f54";
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState<string>("");
   const { account, signAndSubmitTransaction } = useWallet();
-  const [accountHasList, setAccountHasList] = useState<boolean>(false);
+  const [accountHasList, setAccountHasList] = useState<boolean>(true);
   const [transactionInProgress, setTransactionInProgress] = useState<boolean>(false);
 
   const onWriteTask = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,15 +36,15 @@ function App() {
     if (!account) return [];
     try {
       const todoListResource = await aptos.getAccountResource(
-        {accountAddress:account?.address,
-          resourceType:`${moduleAddress}::todolist::TodoList`}
-      );
+          {accountAddress:account?.address,
+            resourceType:`${moduleAddress}::todolist::TodoList`}
+        );
       setAccountHasList(true);
       // tasks table handle
-      const tableHandle = (todoListResource as any).data.tasks.handle;
+      const tableHandle = (todoListResource as any).tasks.handle;
       // tasks table counter
-      const taskCounter = (todoListResource as any).data.task_counter;
-
+      const taskCounter = (todoListResource as any).task_counter;
+   
       let tasks = [];
       let counter = 1;
       while (counter <= taskCounter) {
@@ -172,17 +173,22 @@ function App() {
     fetchList();
   }, [account?.address]);
 
+  const { walletAddress } = useParams();
+  const navigate = useNavigate();
+
+  const goTo = ({ path }: { path: string }) => {
+    navigate(`/user/${walletAddress}/${path}`);
+  };
+
   return (
     <div className="bg-dark text-white overflow-hidden min-w-screen min-h-screen relative">
       <div className="mx-auto ">
         <div className="flex justify-between items-center z-50 mx-10">
-          <img src={Logo} className='m-4 h-24 w-26'></img>
+          <Link to="/"><img src={Logo} className='m-4 h-24 w-26'></img></Link>
           <div className='flex flex-center m-10 text-2xl gap-10'>
-            <a href="#" className="p-1">Tasks</a>
-            <a href="#" className="p-1">Collections</a>
-            <a href="#" className="p-1">Challenges</a>
-            <a href="#" className="p-1">Leadership Board</a>
-            <a href="#" className="p-1">Help</a>
+            {["Dashboard", "Tasks", "Collections", "Challenges", "Leadership Board"].map((item) => (
+              <button onClick={() => goTo({ path: item.toLowerCase() })} className="p-1">{item}</button>
+            ))}
           </div>
           <div><WalletSelector /></div>
         </div>
@@ -198,20 +204,20 @@ function App() {
             <button
               disabled={!account}
               onClick={addNewList}
-              className="w-full max-w-md mx-auto block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              className=" max-w-md mx-auto block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
               Add new list
             </button>
           </div>
         ) : (
           <div className="space-y-8">
-            <div className="flex gap-2">
+            <div className="flex justify-center gap-2">
               <input
                 type="text"
                 value={newTask}
                 onChange={onWriteTask}
                 placeholder="Add a Task"
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-1/3 text-black px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button
                 onClick={onTaskAdded}
@@ -221,7 +227,7 @@ function App() {
               </button>
             </div>
 
-            <div className="bg-white rounded-lg shadow">
+            <div className="w-2/3 bg-white rounded-lg shadow m-auto ">
               {tasks.map((task) => (
                 <div
                   key={task.task_id}

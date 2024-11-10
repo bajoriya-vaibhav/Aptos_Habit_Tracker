@@ -21,6 +21,7 @@ function Navbar() {
         <img src={Logo} className='m-4 h-28 w-32'></img>
         <div className='flex flex-center m-10 text-4xl text-white gap-10'>
           <Link to ="/about" className="p-1">About</Link>
+          <Link to ="/help" className="p-1">Help</Link>
           <button onClick={handleConnect} className="p-1 ">
             Dashboard
           </button>
