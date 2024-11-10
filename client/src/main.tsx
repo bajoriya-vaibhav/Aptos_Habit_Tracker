@@ -9,7 +9,7 @@ const wallets = [new PetraWallet()];
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AptosWalletAdapterProvider plugins={wallets} autoConnect={true}>
+    <AptosWalletAdapterProvider plugins={wallets} autoConnect={true} >
       <App />
     </AptosWalletAdapterProvider>
   </StrictMode>,

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useWallet, InputTransactionData } from "@aptos-labs/wallet-adapter-react";
 import { WalletSelector } from "@aptos-labs/wallet-adapter-ant-design";
 import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
-import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { Aptos } from "@aptos-labs/ts-sdk";
 import { Loader2 } from "lucide-react";
 
