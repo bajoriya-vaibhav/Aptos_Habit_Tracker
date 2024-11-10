@@ -17,7 +17,7 @@ type Task = {
 
 const aptosConfig = new AptosConfig({ network: Network.DEVNET });
 export const aptos = new Aptos(aptosConfig);
-export const moduleAddress = "7436ad50e5c686575903e3e8eca3282f4e0f6f3b245b50963f6537a461be1333";
+export const moduleAddress = "e9af3772ca527779acdaa74011c00f9145ea15e1f0a0264f85eea08994964cd8";
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -135,33 +135,30 @@ function App() {
     
     setTransactionInProgress(true);
 
-    try {
-      const completeTransaction: InputTransactionData = {
-        data: {
-          function: `${moduleAddress}::todolist::complete_task`,
-          functionArguments: [taskId]
-        }
-      };
-      const response = await signAndSubmitTransaction(completeTransaction);
-      await aptos.waitForTransaction({transactionHash: response.hash});
+    const completeTransaction: InputTransactionData = {
+      data: {
+        function: `${moduleAddress}::todolist::complete_task`,
+        functionArguments: [taskId]
+      }
+    };
 
-      const currentTimestamp = Math.floor(Date.now() / 1000);
-      const checkTransaction: InputTransactionData = {
-        data: {
-          function: `${moduleAddress}::todolist::is_task_completed`,
-          functionArguments: [taskId, currentTimestamp]
-        }
-      };
-      const checkResponse = await signAndSubmitTransaction(checkTransaction);
-      await aptos.waitForTransaction({transactionHash: checkResponse.hash});
+    try {
+      // sign and submit transaction to chain
+      const response = await signAndSubmitTransaction(completeTransaction);
+      // wait for transaction
+      await aptos.waitForTransaction({transactionHash:response.hash});
 
       setTasks((prevState) => {
         const newState = prevState.map((obj) => {
+          // if task_id equals the checked taskId, update completed property
           if (obj.task_id === taskId) {
             return { ...obj, completed: true };
           }
+
+          // otherwise return object as is
           return obj;
         });
+
         return newState;
       });
     } catch (error: any) {
