@@ -6,7 +6,7 @@ module account_addr::user {
 
     // User struct (no visibility modifier needed)
     struct User has key {
-		handle: String,
+		// handle: String,
         health: u64,
         exp: u64,
         level: u64,
@@ -15,11 +15,11 @@ module account_addr::user {
         max_health: u64
     }
 
-	// Getter function for handle
-	public fun get_handle(account: address): String acquires User {
-		let user = borrow_global<User>(account);
-		user.handle
-	}
+	// // Getter function for handle
+	// public fun get_handle(account: address): String acquires User {
+	// 	let user = borrow_global<User>(account);
+	// 	user.handle
+	// }
 
     // Getter function for health
     public fun get_health(account: address): u64 acquires User {
@@ -40,14 +40,13 @@ module account_addr::user {
     }
 
     // Function to create a new user and move it to storage
-    public entry fun create_user(account: &signer, handle: String) {
+    public entry fun create_user(account: &signer) {
         let init_health = 10;
         let init_exp = 0;
         let init_level = 1;
         let signer_address = signer::address_of(account);
 
         let user = User {
-			handle,
             health: init_health,
             exp: init_exp,
             level: init_level,
