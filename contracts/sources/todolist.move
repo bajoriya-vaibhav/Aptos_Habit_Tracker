@@ -1,4 +1,3 @@
-
 module account_addr::user {
     use std::signer;
 
@@ -7,6 +6,7 @@ module account_addr::user {
 
     // User struct (no visibility modifier needed)
     struct User has key {
+		handle: String,
         health: u64,
         exp: u64,
         level: u64,
@@ -14,6 +14,12 @@ module account_addr::user {
         max_exp: u64,
         max_health: u64
     }
+
+	// Getter function for handle
+	public fun get_handle(account: address): String acquires User {
+		let user = borrow_global<User>(account);
+		user.handle
+	}
 
     // Getter function for health
     public fun get_health(account: address): u64 acquires User {
@@ -34,13 +40,14 @@ module account_addr::user {
     }
 
     // Function to create a new user and move it to storage
-    public entry fun create_user(account: &signer) {
+    public entry fun create_user(account: &signer, handle: String) {
         let init_health = 10;
         let init_exp = 0;
         let init_level = 1;
         let signer_address = signer::address_of(account);
 
         let user = User {
+			handle,
             health: init_health,
             exp: init_exp,
             level: init_level,
@@ -88,7 +95,7 @@ module account_addr::todolist {
 	const E_NOT_INITIALIZED: u64 = 1;
 	const ETASK_DOESNT_EXIST: u64 = 2;
 	const ETASK_IS_COMPLETED: u64 = 3;
-
+	const E_ALREADY_INITIALIZED: u64 = 4;
 	struct TodoList has key {
 		tasks: Table<u64, Task>,
 		task_counter: u64
@@ -106,12 +113,15 @@ module account_addr::todolist {
 	}
 
 	public entry fun create_list(account: &signer) {
-		let todoList = TodoList {
-			tasks: table::new(),
-			task_counter: 0
-		};
-		move_to(account, todoList);
-	}
+        let todo_list = TodoList {
+            tasks: table::new(),
+            task_counter: 0
+        };
+        // move the TodoList resource under the signer account
+        move_to(account, todo_list);
+    }
+
+
 
 	public entry fun create_task(account: &signer, content: String, timestamp: u64, duration: u64) acquires TodoList {
 		let signer_address = signer::address_of(account);
@@ -139,25 +149,22 @@ module account_addr::todolist {
 		event::emit(new_task);
 	}
 
-	// Mark task as complete and apply effects
 	public entry fun complete_task(account: &signer, task_id: u64) acquires TodoList {
-		// gets the signer address
-		let signer_address = signer::address_of(account);
-		assert!(exists<TodoList>(signer_address), E_NOT_INITIALIZED);
-		// gets the TodoList resource
-		let todo_list = borrow_global_mut<TodoList>(signer_address);
-		let counter = todo_list.task_counter - 1;
-		// assert task exists
-		assert!(table::contains(&todo_list.tasks, task_id), ETASK_DOESNT_EXIST);
-		// gets the task matched the task_id
-		let task_record = table::borrow_mut(&mut todo_list.tasks, task_id);
-		// assert task is not completed
-		assert!(task_record.completed == false, ETASK_IS_COMPLETED);
-		// update task as completed
-		task_record.completed = true;
-		table::remove(&mut todo_list.tasks, task_id);
-		todo_list.task_counter = counter;
-	}
+        // gets the signer address
+        let signer_address = signer::address_of(account);
+        // assert signer has created a list
+        assert!(exists<TodoList>(signer_address), E_NOT_INITIALIZED);
+        // gets the TodoList resource
+        let todo_list = borrow_global_mut<TodoList>(signer_address);
+        // assert task exists
+        assert!(table::contains(&todo_list.tasks, task_id), ETASK_DOESNT_EXIST);
+        // gets the task matched the task_id
+        let task_record = table::borrow_mut(&mut todo_list.tasks, task_id);
+        // assert task is not completed
+        assert!(task_record.completed == false, ETASK_IS_COMPLETED);
+        // update task as completed
+        task_record.completed = true;
+    }
 
 	// Check and apply task completion effects on the user
 	public entry fun is_task_completed(account: &signer, task_id: u64, timestamp: u64) acquires TodoList {
