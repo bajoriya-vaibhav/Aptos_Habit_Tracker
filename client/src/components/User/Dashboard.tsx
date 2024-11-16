@@ -13,7 +13,7 @@ import Gold from "../../assets/gold.png";
 const aptosConfig = new AptosConfig({ network: Network.DEVNET });
 export const aptos = new Aptos(aptosConfig);
 export const moduleAddress =
-  "0x5c252fcbbe74fa7c08322a034f50691b1bfe6fb855a1af55f930516f11fd4642";
+  "0xeb4956bef404852fad6cb94ac6fdc105e95deb92666b3f9f6305a16ab8fdd89b";
 
 function Profile() {
   const { walletAddress } = useParams();
@@ -69,11 +69,12 @@ function Profile() {
       const response = await signAndSubmitTransaction(transaction);
       await aptos.waitForTransaction(response.hash);
       console.log("User created successfully.");
-      fetchUserData(); // Fetch user data after creation
+      
     } catch (error) {
       console.error("Error creating user:", error);
     } finally {
       setTransactionInProgress(false);
+      fetchUserData();
     }
   };
 
