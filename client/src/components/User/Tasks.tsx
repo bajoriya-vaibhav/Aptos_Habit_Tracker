@@ -62,6 +62,7 @@ function App() {
       }
       // set tasks in local state
       setTasks(tasks);
+      console.log(tasks)
     } catch (e: any) {
       setAccountHasList(false);
     }
@@ -132,10 +133,11 @@ function App() {
       setTasks(newTasks);
       // clear input text
       setNewTask("");
+      fetchList()
     } catch (error: any) {
       console.log("error", error);
     } finally {
-      setTransactionInProgress(false);
+      setTransactionInProgress(false); 
     }
   };
 
@@ -187,6 +189,19 @@ function App() {
   const goTo = ({ path }: { path: string }) => {
     navigate(`/user/${walletAddress}/${path}`);
   };
+
+  const timeLeft = (createdAt:string,duration: string) : String=>{
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    const createdAtTimestamp = parseInt(createdAt, 10)
+    const taskduration = parseInt(duration, 10);
+    const elapsedTime = currentTimestamp - createdAtTimestamp; // Time elapsed since task creation
+    const remainingTime = taskduration - elapsedTime;
+    if (remainingTime > 0) {
+      return `Time left: ${Math.floor(remainingTime / 3600)}h ${Math.floor((remainingTime % 3600) / 60)}m`;
+    } else {
+      return "Task expired";
+    }
+  }
 
   return (
     <div className="bg-dark text-white overflow-hidden min-w-screen min-h-screen relative">
@@ -268,9 +283,9 @@ function App() {
                     >
                       {`${task.address.slice(0, 6)}...${task.address.slice(-5)}`}
                     </a>
-                    {task.timestamp && task.duration && (
+                    {task.duration && (
                       <div className="text-sm text-gray-500 mt-1">
-                        Duration: {task.duration / 3600} hours
+                        Duration: {timeLeft(task.createdAt, task.duration)}
                       </div>
                     )}
                   </div>
