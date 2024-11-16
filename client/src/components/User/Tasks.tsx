@@ -18,7 +18,7 @@ type Task = {
 
 const aptosConfig = new AptosConfig({ network: Network.DEVNET });
 export const aptos = new Aptos(aptosConfig);
-export const moduleAddress = "0x15666f25b9712319292692152eb8a2a2256e2eb6c7e836714d6aa43b5fcf5759";
+export const moduleAddress = "0x5c252fcbbe74fa7c08322a034f50691b1bfe6fb855a1af55f930516f11fd4642";
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
