@@ -5,15 +5,50 @@ import Logo from '../../assets/logo.png';
 import Health from '../../assets/health.png';
 import Exp from '../../assets/exp.png';
 import Gold from '../../assets/gold.png';
+import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
+import { useEffect, useState } from 'react';
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
+
+const aptosConfig = new AptosConfig({ network: Network.DEVNET });
+export const aptos = new Aptos(aptosConfig);
+export const moduleAddress = "0x15666f25b9712319292692152eb8a2a2256e2eb6c7e836714d6aa43b5fcf5759";
 
 function Profile() {
   const { walletAddress } = useParams();
   const navigate = useNavigate();
+  const { account } = useWallet();
+
+  const [userData, setUserData] = useState({
+    health: 0,
+    experience: 0,
+    level: 0,
+  });
 
   const goTo = ({ path }: { path: string }) => {
     navigate(`/user/${walletAddress}/${path}`);
   };
 
+  const fetchUserData = async () => {
+    if (!account) return [];
+    try {
+      const resource = await aptos.getAccountResource(
+        {accountAddress:account?.address,
+          resourceType:`${moduleAddress}::todolist::TodoList`}
+      );
+      setUserData({
+        health: resource.data.health,
+        experience: resource.data.exp,
+        level: resource.data.level,
+      });
+    } catch (error) {
+      console.log("User does not exist. Creating user...");
+    }
+  };
+  useEffect(() => {
+    if (walletAddress) {
+      fetchUserData();
+    }
+  }, [walletAddress]);
   return (
     <div className="bg-dark text-white overflow-hidden min-w-screen min-h-screen relative">
       <div className="mx-auto ">
@@ -41,7 +76,7 @@ function Profile() {
             <div className='flex justify-center items-center gap-4'>
               <img src={Exp} className='h-10'></img>
               <p>Experience</p>
-              <p>0</p>
+              <p>{userData.experience}</p>
             </div>
             <div className='flex justify-center items-center gap-4'>
               <img src={Gold} className='h-10'></img>

@@ -12,7 +12,7 @@ type Task = {
   completed: boolean;
   content: string;
   task_id: string;
-  timestamp?: number;
+  createdAt?: string;
   duration?: number;
 };
 
@@ -190,12 +190,11 @@ function App() {
     navigate(`/user/${walletAddress}/${path}`);
   };
 
-  const timeLeft = (createdAt:string,duration: string) : String=>{
+  const timeLeft = (createdAt:string,duration: any) : String=>{
     const currentTimestamp = Math.floor(Date.now() / 1000);
     const createdAtTimestamp = parseInt(createdAt, 10)
-    const taskduration = parseInt(duration, 10);
     const elapsedTime = currentTimestamp - createdAtTimestamp; // Time elapsed since task creation
-    const remainingTime = taskduration - elapsedTime;
+    const remainingTime = duration - elapsedTime;
     if (remainingTime > 0) {
       return `Time left: ${Math.floor(remainingTime / 3600)}h ${Math.floor((remainingTime % 3600) / 60)}m`;
     } else {
@@ -283,7 +282,7 @@ function App() {
                     >
                       {`${task.address.slice(0, 6)}...${task.address.slice(-5)}`}
                     </a>
-                    {task.duration && (
+                    {task.duration && task.createdAt && (
                       <div className="text-sm text-gray-500 mt-1">
                         Duration: {timeLeft(task.createdAt, task.duration)}
                       </div>
