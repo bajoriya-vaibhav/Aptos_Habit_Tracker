@@ -6,7 +6,6 @@ module account_addr::user {
 
     // User struct (no visibility modifier needed)
     struct User has key {
-		// handle: String,
         health: u64,
         exp: u64,
         level: u64,
@@ -14,12 +13,6 @@ module account_addr::user {
         max_exp: u64,
         max_health: u64
     }
-
-	// // Getter function for handle
-	// public fun get_handle(account: address): String acquires User {
-	// 	let user = borrow_global<User>(account);
-	// 	user.handle
-	// }
 
     // Getter function for health
     public fun get_health(account: address): u64 acquires User {
@@ -119,8 +112,6 @@ module account_addr::todolist {
         // move the TodoList resource under the signer account
         move_to(account, todo_list);
     }
-
-
 
 	public entry fun create_task(account: &signer, content: String, timestamp: u64, duration: u64) acquires TodoList {
 		let signer_address = signer::address_of(account);

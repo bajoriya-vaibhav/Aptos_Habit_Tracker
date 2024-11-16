@@ -18,10 +18,11 @@ type Task = {
 
 const aptosConfig = new AptosConfig({ network: Network.DEVNET });
 export const aptos = new Aptos(aptosConfig);
-export const moduleAddress = "0x2fc2b5e19e8b9793a7ce74b16772285f12005a95599d5934c47c8e18f2e68f54";
+export const moduleAddress = "0x15666f25b9712319292692152eb8a2a2256e2eb6c7e836714d6aa43b5fcf5759";
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [taskDuration, setTaskDuration] = useState<string>("")
   const [newTask, setNewTask] = useState<string>("");
   const { account, signAndSubmitTransaction } = useWallet();
   const [accountHasList, setAccountHasList] = useState<boolean>(true);
@@ -31,7 +32,9 @@ function App() {
     const value = event.target.value;
     setNewTask(value);
   };
-
+  const onDurationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTaskDuration(event.target.value);
+  };
   const fetchList = async () => {
     if (!account) return [];
     try {
@@ -66,6 +69,7 @@ function App() {
 
   const addNewList = async () => {
     if (!account) return [];
+  
     setTransactionInProgress(true);
 
     const transaction:InputTransactionData = {
@@ -89,10 +93,14 @@ function App() {
 
   const onTaskAdded = async () => {
     if (!account) return;
+    if (!newTask.trim() || !taskDuration.trim() || isNaN(Number(taskDuration)) || Number(taskDuration) <= 0) {
+      alert("Please enter a valid task and duration.");
+      return;
+    }
     setTransactionInProgress(true);
 
     const currentTimestamp = Math.floor(Date.now() / 1000);
-    const duration = 3600; // 1 hour in seconds
+    const duration = Number(taskDuration) * 3600;
 
     const transaction: InputTransactionData = {
       data: {
@@ -218,6 +226,14 @@ function App() {
                 onChange={onWriteTask}
                 placeholder="Add a Task"
                 className="w-1/3 text-black px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <input
+                type="number"
+                value={taskDuration}
+                onChange={onDurationChange}
+                placeholder="Duration (hours)"
+                className="w-1/6 text-black px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                min="1"
               />
               <button
                 onClick={onTaskAdded}

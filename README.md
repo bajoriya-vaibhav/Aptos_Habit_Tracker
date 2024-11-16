@@ -35,6 +35,7 @@
    ```
 2. **Install Dependencies**:
    ```bash
+   cd client
    npm install
    ```
 3. **Configure the Environment**:
